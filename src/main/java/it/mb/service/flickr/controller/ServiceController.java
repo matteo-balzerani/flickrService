@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.mb.service.flickr.bean.RequestToDownload;
@@ -26,7 +25,7 @@ public class ServiceController {
 	@Autowired
 	private SearchService searchService;
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String index() {
 		return "service available";
 	}
@@ -46,7 +45,7 @@ public class ServiceController {
 		}
 	}
 
-	@RequestMapping(value = "/search", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/search", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<List<ImagesInfoDTO>> search(@RequestBody SearchRequest request) {
 		request.getTags().removeIf(String::isEmpty);
 		List<ImagesInfoDTO> response = searchService.search(request.getTags(), request.getTitle(),

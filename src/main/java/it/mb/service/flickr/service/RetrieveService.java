@@ -41,7 +41,7 @@ public class RetrieveService {
 			photos = flickrClient.retrieveFlickrImagesByTags(tagsArr);
 		} catch (FlickrServiceException e) {
 			log.error("download methods interrupted by {}", e.getMessage());
-			return 0;
+			return null;
 		}
 		photos.forEach(p -> {
 			try {
