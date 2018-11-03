@@ -7,7 +7,7 @@ import it.mb.service.flickr.service.util.FlickrServiceException;
 
 public interface FlickrClient {
 
-	void test();
+	String test() throws FlickrServiceException;
 
 	PhotoList<Photo> retrieveFlickrImagesByTags(String[] tags) throws FlickrServiceException;
 

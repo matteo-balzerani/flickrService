@@ -31,7 +31,11 @@ public class ServiceController {
 		return "service available";
 	}
 
-	
+	@GetMapping("/pingFlickr")
+	public ResponseEntity<String> testFlickrApi() {
+		return new ResponseEntity<>(service.test(), HttpStatus.OK);
+	}
+
 	@PostMapping(value = "/download", consumes = "application/json")
 	public ResponseEntity<String> download(@RequestBody RequestToDownload tags) {
 		Integer num = service.download(tags.getTags());

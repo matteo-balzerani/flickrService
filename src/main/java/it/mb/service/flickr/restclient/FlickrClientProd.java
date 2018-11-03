@@ -1,7 +1,8 @@
 package it.mb.service.flickr.restclient;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,18 +31,20 @@ public class FlickrClientProd implements FlickrClient {
 	private FlickrConfiguration flickr;
 
 	@Override
-	public void test() {
+	public String test() throws FlickrServiceException {
 		TestInterface testInterface = flickr.getFlickrInterface().getTestInterface();
 		Collection<Element> results = null;
 		try {
-			results = testInterface.echo(Collections.EMPTY_MAP);
+			Map<String, String> request = new HashMap<>();
+			results = testInterface.echo(request);
 		} catch (FlickrException e) {
-			e.printStackTrace();
+			log.error("error " + e.getMessage());
+			throw new FlickrServiceException(e, "exception during echo test.");
 		}
-		if (results != null)
-			log.debug(results.toString());
-		else
-			log.debug("[nil]");
+		  for (Element e : results) {
+			    log.info("{} = {}", e.getNodeName(), e.getNodeValue());
+			  }
+		return results.toString();
 	}
 
 	@Override
@@ -52,13 +55,14 @@ public class FlickrClientProd implements FlickrClient {
 		try {
 			SearchParameters params = new SearchParameters();
 			params.setTags(tags);
-			response = photoInter.search(params, 500, 1);
-			log.info("num pages="+response.getPages());
-			for (int i = 1; i <= 100; i++) {
-				log.info(".");
-				response.addAll(photoInter.search(params, 500, i));
-			}
-			log.debug("results num:" + response.getTotal() + "    size:: " + response.size());
+			response = photoInter.search(params, flickr.getPerPage(), flickr.getPages());
+			log.info("num pages=" + response.getPages());
+			// put here code to retrieve other pages.
+			//
+			// for (int i = 1; i <= 100; i++) {
+			// log.info(".");
+			// response.addAll(photoInter.search(params, 500, i));
+			// }
 		} catch (FlickrException e) {
 			log.error("error " + e.getMessage());
 			throw new FlickrServiceException(e, "exception during search");
@@ -75,7 +79,7 @@ public class FlickrClientProd implements FlickrClient {
 		}
 		PhotosInterface photoInter = flickr.getFlickrInterface().getPhotosInterface();
 		try {
-			response= photoInter.getInfo(photo.getId(), photo.getSecret());
+			response = photoInter.getInfo(photo.getId(), photo.getSecret());
 		} catch (FlickrException e) {
 			log.error("error " + e.getMessage());
 			throw new FlickrServiceException(e, "exception retriving info about photo : " + photo.getId());

@@ -77,4 +77,14 @@ public class RetrieveService {
 			log.info("initial tags not configured");
 	}
 
+	public String test() {
+		try {
+			return flickrClient.test();
+		} catch (FlickrServiceException e) {
+			log.error("test echo methods interrupted by {}", e.getMessage());
+			return "KO";
+		}
+
+	}
+
 }

@@ -1,7 +1,8 @@
 package it.mb.service.flickr.restclient;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,18 +31,18 @@ public class FlickrClientDev implements FlickrClient {
 	private FlickrConfiguration flickr;
 
 	@Override
-	public void test() {
+	public String test() throws FlickrServiceException {
 		TestInterface testInterface = flickr.getFlickrInterface().getTestInterface();
 		Collection<Element> results = null;
 		try {
-			results = testInterface.echo(Collections.EMPTY_MAP);
+			Map<String, String> request = new HashMap<>();
+			request.put("test", "OK");
+			results = testInterface.echo(request);
 		} catch (FlickrException e) {
-			e.printStackTrace();
+			log.error("error " + e.getMessage());
+			throw new FlickrServiceException(e, "exception during echo test.");
 		}
-		if (results != null)
-			log.debug(results.toString());
-		else
-			log.debug("[nil]");
+		return results.toString();
 	}
 
 	@Override
@@ -52,8 +53,7 @@ public class FlickrClientDev implements FlickrClient {
 		try {
 			SearchParameters params = new SearchParameters();
 			params.setTags(tags);
-			response = photoInter.search(params, 100, 1);
-			log.debug("results num:" + response.getTotal() + "    size:: " + response.size());
+			response = photoInter.search(params, flickr.getPerPage(), flickr.getPages());
 		} catch (FlickrException e) {
 			log.error("error " + e.getMessage());
 			throw new FlickrServiceException(e, "exception during search");
@@ -70,7 +70,7 @@ public class FlickrClientDev implements FlickrClient {
 		}
 		PhotosInterface photoInter = flickr.getFlickrInterface().getPhotosInterface();
 		try {
-			response=photoInter.getInfo(photo.getId(), photo.getSecret());
+			response = photoInter.getInfo(photo.getId(), photo.getSecret());
 		} catch (FlickrException e) {
 			log.error("error " + e.getMessage());
 			throw new FlickrServiceException(e, "exception retriving info about photo : " + photo.getId());
