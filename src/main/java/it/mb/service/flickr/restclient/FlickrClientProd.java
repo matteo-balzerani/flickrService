@@ -41,9 +41,9 @@ public class FlickrClientProd implements FlickrClient {
 			log.error("error " + e.getMessage());
 			throw new FlickrServiceException(e, "exception during echo test.");
 		}
-		  for (Element e : results) {
-			    log.info("{} = {}", e.getNodeName(), e.getNodeValue());
-			  }
+		for (Element e : results) {
+			log.info("{} = {}", e.getNodeName(), e.getNodeValue());
+		}
 		return results.toString();
 	}
 

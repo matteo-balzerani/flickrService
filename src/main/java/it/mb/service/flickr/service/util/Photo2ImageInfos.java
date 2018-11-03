@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import com.flickr4java.flickr.photos.Photo;
 
-import it.mb.service.flickr.domain.ImagesInfo;
+import it.mb.service.flickr.domain.ImageInfos;
 
-public class Photo2ImagesInfo {
+public class Photo2ImageInfos {
 
-	public static ImagesInfo convert(Photo p) {
-		ImagesInfo img = new ImagesInfo();
+	public static ImageInfos convert(Photo p) {
+		if (p == null)
+			return null;
+		ImageInfos img = new ImageInfos();
 		img.setDesc(p.getDescription());
 		img.setFlickrId(p.getId());
 		img.setGeoData(p.getGeoData() != null ? p.getGeoData().toString() : null);

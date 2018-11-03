@@ -33,6 +33,27 @@ public class RetrieveService {
 	@Autowired
 	private MongoDbService mongoDbService;
 
+	/**
+	 * test connection to flickr api
+	 * 
+	 * @return
+	 */
+	public String test() {
+		try {
+			return flickrClient.test();
+		} catch (FlickrServiceException e) {
+			log.error("test echo methods interrupted by {}", e.getMessage());
+			return "KO";
+		}
+
+	}
+
+	/**
+	 * download image from Flickr and save it
+	 * 
+	 * @param tags
+	 * @return
+	 */
 	public Integer download(List<String> tags) {
 		tags.removeIf(tag -> tag == null || tag.trim() == null || "".equals(tag.trim()));
 		String[] tagsArr = tags.toArray(new String[tags.size()]);
@@ -68,23 +89,10 @@ public class RetrieveService {
 	public void init() {
 		applicationConfiguration.getInitTags()
 				.removeIf(tag -> tag == null || tag.trim() == null || "".equals(tag.trim()));
-
 		if (applicationConfiguration.getInitTags() != null || !applicationConfiguration.getInitTags().isEmpty()) {
-			// log.info("initial tags are :
-			// {}",applicationConfiguration.getInitTags().get(0));
 			download(applicationConfiguration.getInitTags());
 		} else
 			log.info("initial tags not configured");
-	}
-
-	public String test() {
-		try {
-			return flickrClient.test();
-		} catch (FlickrServiceException e) {
-			log.error("test echo methods interrupted by {}", e.getMessage());
-			return "KO";
-		}
-
 	}
 
 }

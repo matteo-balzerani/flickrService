@@ -12,6 +12,10 @@ import com.flickr4java.flickr.REST;
 @Configuration
 public class FlickrConfiguration {
 
+	private static final int perPageMin = 100;
+	private static final int perPageMax = 500;
+	private static final int pagesMin = 1;
+
 	@Autowired
 	private ApplicationConfiguration appConfig;
 
@@ -38,14 +42,18 @@ public class FlickrConfiguration {
 		return perPage;
 	}
 
+	/**
+	 * method to initializer FlickrInterface. it manage profile constant to
+	 * configure results perPage and pages
+	 */
 	@PostConstruct
 	private void init() {
 		if ("prod".equals(appConfig.getProfile())) {
-			this.perPage = 500;
-			this.pages = 1;
+			this.perPage = perPageMax;
+			this.pages = pagesMin;
 		} else {
-			this.perPage = 100;
-			this.pages = 1;
+			this.perPage = perPageMin;
+			this.pages = pagesMin;
 		}
 		this.flickrInterface = new Flickr(this.apiKey, this.secret, new REST());
 	}

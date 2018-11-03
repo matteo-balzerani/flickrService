@@ -36,11 +36,13 @@ public class FlickrClientDev implements FlickrClient {
 		Collection<Element> results = null;
 		try {
 			Map<String, String> request = new HashMap<>();
-			request.put("test", "OK");
 			results = testInterface.echo(request);
 		} catch (FlickrException e) {
 			log.error("error " + e.getMessage());
 			throw new FlickrServiceException(e, "exception during echo test.");
+		}
+		for (Element e : results) {
+			log.info("{} = {}", e.getNodeName(), e.getNodeValue());
 		}
 		return results.toString();
 	}

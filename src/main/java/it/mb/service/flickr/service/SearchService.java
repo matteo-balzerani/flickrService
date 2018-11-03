@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.mb.service.flickr.bean.dto.ImagesInfoDTO;
+import it.mb.service.flickr.bean.dto.ImageInfosDTO;
 
 @Service
 public class SearchService {
@@ -18,8 +18,16 @@ public class SearchService {
 	@Autowired
 	private MongoDbService mongoDbService;
 
-	public List<ImagesInfoDTO> search(List<String> tags, String title, boolean isOrMode) {
-		List<ImagesInfoDTO> images = new ArrayList<>();
+	
+	/**
+	 * search imageInfos service
+	 * @param tags
+	 * @param title
+	 * @param isOrMode
+	 * @return
+	 */
+	public List<ImageInfosDTO> search(List<String> tags, String title, boolean isOrMode) {
+		List<ImageInfosDTO> images = new ArrayList<>();
 		if (tags == null || tags.isEmpty()) {
 			images = mongoDbService.findByTitle(title);
 		} else {
@@ -33,6 +41,10 @@ public class SearchService {
 		return images;
 	}
 
+	/**
+	 * retrieve all tags
+	 * @return
+	 */
 	public List<String> findAllTags() {
 		return mongoDbService.findAllTags();
 	}

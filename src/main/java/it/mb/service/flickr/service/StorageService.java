@@ -25,6 +25,14 @@ public class StorageService {
 	@Autowired
 	private StorageConfiguration config;
 
+	/**
+	 * save the image in local storage
+	 * @param url
+	 * @param filename
+	 * @param format
+	 * @return
+	 * @throws FlickrServiceException
+	 */
 	public String downloadPhoto(String url, String filename, String format) throws FlickrServiceException {
 		String path = Paths.get(config.getFolder(), filename + "." + format).toString();
 		if (filename == null || filename.trim().isEmpty() || format == null || format.trim().isEmpty()) {

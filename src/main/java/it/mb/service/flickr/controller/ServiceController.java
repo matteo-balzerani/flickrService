@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.mb.service.flickr.bean.RequestToDownload;
 import it.mb.service.flickr.bean.SearchRequest;
-import it.mb.service.flickr.bean.dto.ImagesInfoDTO;
+import it.mb.service.flickr.bean.dto.ImageInfosDTO;
 import it.mb.service.flickr.service.RetrieveService;
 import it.mb.service.flickr.service.SearchService;
 
+/**
+ * rest contro11er to use services
+ */
 @RestController
 public class ServiceController {
 
@@ -25,16 +28,32 @@ public class ServiceController {
 	@Autowired
 	private SearchService searchService;
 
+	/**
+	 * test the service
+	 * 
+	 * @return
+	 */
 	@GetMapping("/")
-	public String index() {
-		return "service available";
+	public ResponseEntity<String> index() {
+		return new ResponseEntity<>("service available", HttpStatus.OK);
 	}
 
+	/**
+	 * ping flickr API by echo service
+	 * 
+	 * @return
+	 */
 	@GetMapping("/pingFlickr")
 	public ResponseEntity<String> testFlickrApi() {
 		return new ResponseEntity<>(service.test(), HttpStatus.OK);
 	}
 
+	/**
+	 * download images by tags
+	 * 
+	 * @param tags
+	 * @return
+	 */
 	@PostMapping(value = "/download", consumes = "application/json")
 	public ResponseEntity<String> download(@RequestBody RequestToDownload tags) {
 		Integer num = service.download(tags.getTags());
@@ -45,14 +64,25 @@ public class ServiceController {
 		}
 	}
 
+	/**
+	 * search imageInfos by tags (optional) and/or title (optional)
+	 * 
+	 * @param request
+	 * @return
+	 */
 	@PostMapping(value = "/search", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<List<ImagesInfoDTO>> search(@RequestBody SearchRequest request) {
+	public ResponseEntity<List<ImageInfosDTO>> search(@RequestBody SearchRequest request) {
 		request.getTags().removeIf(String::isEmpty);
-		List<ImagesInfoDTO> response = searchService.search(request.getTags(), request.getTitle(),
+		List<ImageInfosDTO> response = searchService.search(request.getTags(), request.getTitle(),
 				request.isTagsInORMode());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	/**
+	 * retrieve all tags
+	 * 
+	 * @return
+	 */
 	@GetMapping(value = "/tags", produces = "application/json")
 	public ResponseEntity<List<String>> getAllTags() {
 		List<String> response = searchService.findAllTags();

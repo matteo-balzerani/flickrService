@@ -1,8 +1,17 @@
 package it.mb.service.flickr.bean.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ImagesInfoDTO {
+
+/**
+ * 
+ * ImageInfosDTO
+ *
+ */
+public class ImageInfosDTO implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	private String path;
 
@@ -85,7 +94,7 @@ public class ImagesInfoDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ImagesInfoDTO other = (ImagesInfoDTO) obj;
+		ImageInfosDTO other = (ImageInfosDTO) obj;
 		if (desc == null) {
 			if (other.desc != null)
 				return false;
@@ -119,4 +128,12 @@ public class ImagesInfoDTO {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "ImageInfosDTO [path=" + path + ", imageUrl=" + imageUrl + ", tags=" + String.join(",", tags) + ", desc=" + desc
+				+ ", title=" + title + ", flickrId=" + flickrId + "]";
+	}
+
+	
+	
 }

@@ -11,9 +11,9 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCursor;
 
 @Repository
-public class ImagesInfoTemplateImpl implements ImagesInfoTemplate {
+public class ImageInfosTemplateImpl implements ImageInfosTemplate {
 	
-	private static final String collection="imagesInfo";
+	private static final String collection="imageinfos";
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
