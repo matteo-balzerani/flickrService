@@ -1,13 +1,13 @@
 # flickrService
 Service to collect and retrieve flickr images
 
-If "flickr.initial.tags" is not empty, application retrieve some images from Flickr at startUp.
+If *flickr.initial.tags*is not empty, application retrieve some images from Flickr at startUp.
 
-if dev profile is active the service retrieve less images than prod profile.
+if *dev* profile is active the service retrieve less images than *prod* profile.
 
 
 ## Configuration
-The files application.properties and application-test.properties manage some properties.
+The files *application.properties* and *application-test.properties* manage some properties.
 
 ```
 spring.data.mongodb.host=localhost
@@ -25,7 +25,7 @@ flickr.initial.tags=Lemur,Tiger
 - choose mongodb and profile
 - choose folder in fileSystem where save images using storage.folder
 - flickr.apiKey and flickr.secret are needed to use FlickrAPI
-- use "flickr.initial.tags" to set the initial import
+- use "flickr.initial.tags" to set the initial (optional= import
 
 
 
@@ -36,7 +36,7 @@ mvn clean install spring-boot:run
 ```
 
 ## Run and Configuration via Maven
-use properties below in mvn command:
+use properties above in mvn command:
 i.e :
 ```
 mvn clean install spring-boot:run -Dstorage.folder=/tmp/flickr/ -Dflickr.initial.tags=Lemur,Tiger
@@ -47,5 +47,5 @@ whren the service is started some Rest methods are available. Use Swagger to che
 i.e.: http://localhost:8080/swagger-ui.html
 
 - http://localhost:8080/pingFlickr test the connection to Flickr
-- http://localhost:8080/download retrieve images from Flickr
-- http://localhost:8080/search retrieve information in Local DB/Storage
+- http://localhost:8080/download retrieve images from Flickr using tags
+- http://localhost:8080/search retrieve information in Local DB/Storage using tags(in AND or OT mode) and/or title
