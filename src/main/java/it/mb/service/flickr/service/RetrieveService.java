@@ -90,7 +90,9 @@ public class RetrieveService {
 		applicationConfiguration.getInitTags()
 				.removeIf(tag -> tag == null || tag.trim() == null || "".equals(tag.trim()));
 		if (applicationConfiguration.getInitTags() != null || !applicationConfiguration.getInitTags().isEmpty()) {
+			log.info("initial import started with params: {}",String.join(",", applicationConfiguration.getInitTags()));
 			download(applicationConfiguration.getInitTags());
+			log.info("initial import finished!");
 		} else
 			log.info("initial tags not configured");
 	}
